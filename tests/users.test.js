@@ -1,5 +1,6 @@
 const request = require("supertest");
 const app = require("../src/app");
+const database = require("../database");
 const crypto = require("node:crypto");
 
 describe("GET /api/users", () => {
@@ -58,7 +59,7 @@ describe("POST /api/users", () => {
     expect(userInDatabase).toHaveProperty("firstname");
     expect(userInDatabase.firstname).toStrictEqual(newUser.firstname);
     expect(userInDatabase).toHaveProperty("lastname");
-    expect(userInDatabase.lastame).toStrictEqual(newUser.lastname);
+    expect(userInDatabase.lastName).toStrictEqual(newUser.lastname);
     expect(userInDatabase).toHaveProperty("email");
     expect(userInDatabase.email).toStrictEqual(newUser.email);
     expect(userInDatabase).toHaveProperty("city");
@@ -66,6 +67,6 @@ describe("POST /api/users", () => {
     expect(userInDatabase).toHaveProperty("language");
     expect(userInDatabase.language).toStrictEqual(newUser.language);
     // N'effectuez jamais d'assertion directe sur le mot de passe stocké dans la base de données
-    // Vous devriez plutôt vérifier l'authentification lors des tests d'authentification
+    // vérifier l'authentification lors des tests d'authentification
   });
 });
