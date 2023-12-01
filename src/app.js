@@ -31,4 +31,9 @@ app.post("/api/users", validateUser, userControllers.createUser);
 app.put("/api/movies/:id", validateMovie, movieControllers.updateMovie);
 app.put("/api/users/:id", validateUser, userControllers.updateUsers);
 
+// Supprimer
+
+app.delete("/api/movies/:id", movieControllers.deleteMovie);
+app.delete("/api/users/:id", userControllers.deleteUsers);
+
 module.exports = app;
