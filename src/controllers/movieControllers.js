@@ -65,7 +65,7 @@ const getMovieById = (req, res) => {
     });
 };
 
-// Définir une fonction pour ajouter un nouveau film à la base de données
+// Fonction pour ajouter un nouveau film à la base de données
 const postMovie = (req, res) => {
   // Extraire les données du corps de la requête
   const { title, director, year, color, duration } = req.body;
@@ -85,7 +85,7 @@ const postMovie = (req, res) => {
     });
 };
 
-// Définir une fonction pour mettre à jour les informations d'un film dans la base de données
+// Fonction pour mettre à jour les informations d'un film dans la base de données
 const updateMovie = (req, res) => {
   const id = parseInt(req.params.id);
   const { title, director, year, color, duration } = req.body;
@@ -110,12 +110,17 @@ const updateMovie = (req, res) => {
     });
 };
 
+// Fonction pour supprimer un film de la base de données
+
 const deleteMovie = (req, res) => {
   const id = parseInt(req.params.id);
 
+  // Utiliser la méthode query de la base de données pour exécuter une requête SQL DELETE
   database
     .query("delete from movies where id = ?", [id])
     .then(([result]) => {
+      // Vérifier si un film a été supprimé (aucun film trouvé avec cet ID)
+
       if (result.affectedRows === 0) {
         res.sendStatus(404);
       } else {

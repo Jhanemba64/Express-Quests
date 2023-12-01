@@ -161,3 +161,29 @@ describe("POST /api/movies", () => {
     expect(movieInDatabase.duration).toBe(newMovie.duration);
   });
 });
+
+describe("DELETE /api/movies/:id", () => {
+  it("should delete the movie", async () => {
+    const [result] = await database.query(
+      "INSERT INTO movies(title, director, year, color, duration) VALUES (?, ?, ?, ?, ?)",
+      [
+        newMovie.title,
+        newMovie.director,
+        newMovie.year,
+        newMovie.color,
+        newMovie.duration,
+      ]
+    );
+
+    const id = result.insertId;
+
+    const response = await request(app).delete(`/api/movies/${id}`);
+
+    expect(response.status).toEqual(204);
+  });
+  it("should return no movie", async () => {
+    const response = await request(app).delete(`/api/movies/0`);
+
+    expect(response.status).toEqual(404);
+  });
+});

@@ -186,4 +186,40 @@ describe("PUT /api/users/:id", () => {
     expect(response.status).toEqual(404);
   });
 });
+
+// Tests pour la route DELETE /api/users/:id
+
+describe("DELETE /api/users/:id", () => {
+  it("should delete the user", async () => {
+    // Insérer un nouvel utilisateur dans la base de données pour le supprimer ensuite
+    const [result] = await database.query(
+      "INSERT INTO users(firstname, lastname, email, city, language) VALUES (?, ?, ?, ?, ?)",
+      [
+        newUser.firstname,
+        newUser.lastname,
+        `${crypto.randomUUID()}@wild.co`,
+        newUser.city,
+        newUser.language,
+      ]
+    );
+
+    const id = result.insertId;
+
+    // Effectuer une requête DELETE pour supprimer l'utilisateur créé
+
+    const response = await request(app).delete(`/api/users/${id}`);
+
+    expect(response.status).toEqual(204);
+  });
+
+  it("should return no user", async () => {
+    // Effectuer une requête DELETE pour un utilisateur inexistant
+    const response = await request(app).delete(`/api/users/0`);
+
+    expect(response.status).toEqual(404);
+  });
+});
+
+// Fermer la connexion à la base de données après l'exécution de tous les tests
+
 afterAll(() => database.end());
